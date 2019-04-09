@@ -66,27 +66,20 @@ def remove_OutLiers_Time_Vel(points):
             if prv.time < crr.time and crr.time < nxt.time:
                 if firstTime:
                     firstTime = False
-                    if crr.vel <= 150 and (prv.lon <= 124.0 and prv.lon >= 110.0 and prv.lat >= 36.0 and prv.lat <= 43.0):
+                    if (crr.vel < 150 and prv.lon <= 120.0 and prv.lon >= 113.0 and prv.lat >= 36.0 and prv.lat <= 42.0 and abs(crr.vel - prv.vel) < 50):
                         result.append(prv) 
                         result.append(crr) 
-                elif not (crr.lon <= 124.0 and crr.lon >= 110.0 and crr.lat >= 36.0 and crr.lat <= 43.0 and crr.vel < 150):
-                    print("Inside the bounds and velocity threshold AND MY VEL IS:")
+                elif not (crr.lon <= 120.0 and crr.lon >= 113.0 and crr.lat >= 36.0 and crr.lat <= 42.0 and crr.vel < 150 and abs(crr.vel - prv.vel) < 50):
+                    print("Im out and my vel is:")
                     print(crr.vel)
                     cont += 1
                     points[i+1].compute_metrics(prv)
 
-                
-                elif (crr.vel < 150):
-                    if abs(crr.vel - prv.vel) < 70:
-                        print("Should have less than 150 but it is:")
-                        print(crr.vel)
-                        result.append(crr) 
-                
-
                 else:
-                    cont += 1
-                    points[i+1].compute_metrics(prv)
-        if(points[-1].vel> 150):
+                    print("Should have less than 150 and the difference from the last one should be:")
+                    print(crr.vel)
+                    result.append(crr) 
+        if (points[-1].vel < 150 and points[-1].lon <= 120.0 and points[-1].lon >= 113.0 and points[-1].lat >= 36.0 and points[-1].lat <= 42.0 and abs(points[-2].vel-points[-1].vel) <= 50):
             result.append(points[-1])
         print("Noise removal took care of: " + str(cont))
     return result

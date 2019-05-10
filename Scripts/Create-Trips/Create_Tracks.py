@@ -64,16 +64,16 @@ with open("Tracks-to-Trips-ft-BigGeo.txt", "w") as outfile:
                     trip = Track(name=cont, segments=[trajs])
                     trajs = Segment([])
                     trajs = Segment([Point(lati, longi, tstamp)])
-                    trip.to_trip(True, 'no strategy', 5, False, 5, 5, True, 20.0, 20)
+                    trip.to_trip(True, 'inverse', 5, False, 5, 5, True, 20.0, 20)
                     #now we need to print the results
                     #print(len(trip.segments))
                     #for ind in range(len(trip.segments)-1):
                         #print("SEGMENTOS")
                     print("The size of the points is:")
                     print(len(trip.segments[0].points))
-                    for indPoint in range(len(trip.segments[0].points)):
-                       
-                        outfile.write(str(taxi_id2) + "," + '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lat)) + "," + trip.segments[0].points[indPoint].time.isoformat(' ', 'seconds')+ "," + str(trip.segments[0].points[indPoint].vel) + "," + trajNum2  )
+                    for indPoint in range(len(trip.segments[0].points)): 
+                        
+                        outfile.write(str(taxi_id2) + "," +  '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lat)) + "," + trip.segments[0].points[indPoint].time.isoformat(' ', 'seconds')+ "," + str(trip.segments[0].points[indPoint].vel) + "," + trajNum2.strip() + "," + '{0:.5f}'.format(float(trip.segments[0].points[0].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[0].lat)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[-1].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[-1].lat)) + "\n"   )
 
                     #TODO Create to_txt method in the library
                     taxi_id2 = taxi_id
@@ -84,12 +84,11 @@ with open("Tracks-to-Trips-ft-BigGeo.txt", "w") as outfile:
                 line = infile.readline()  
             cont += 1 
             trip = Track(name="last", segments=[trajs])
-            trip.to_trip(True,'no strategy', 1, False, 5, 5, True, 20.0, 20)
+            trip.to_trip(True,'inverse', 1, False, 5, 5, True, 20.0, 20)
             print("LAST SEGMENT OF TRAJECTORY")
-            for indPoint in range(len(trip.segments[0].points)):
-                       
-                        outfile.write(str(taxi_id2) + "," +  '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lat)) + "," + trip.segments[0].points[indPoint].time.isoformat(' ', 'seconds')+ "," + str(trip.segments[0].points[indPoint].vel) + "," + trajNum2  )
-
+            for indPoint in range(len(trip.segments[0].points)):       
+                outfile.write(str(taxi_id2) + "," +  '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[indPoint].lat)) + "," + trip.segments[0].points[indPoint].time.isoformat(' ', 'seconds')+ "," + str(trip.segments[0].points[indPoint].vel) + "," + trajNum2.strip() + "," + '{0:.5f}'.format(float(trip.segments[0].points[0].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[0].lat)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[-1].lon)) + "," + '{0:.5f}'.format(float(trip.segments[0].points[-1].lat)) + "\n"   )
 
 time_of_end = datetime.now()
+
 print("Time of start was: " + time_of_start.isoformat(' ', 'seconds') + " and time of end was: " + time_of_end.isoformat(' ', 'seconds'))

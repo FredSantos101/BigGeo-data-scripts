@@ -35,7 +35,7 @@ def remove_liers(points):
         prv = points[i-1]
         crr = points[i]
         nxt = points[i+1]
-        if (prv.time <= crr.time and crr.time <= nxt.time and 108.0<= crr.lon and crr.lon <= 125.0 and 35 <= crr.lat and crr.lat <= 45 and crr.vel <= 160.0):           
+        if (prv.time <= crr.time and crr.time <= nxt.time and 108.0<= crr.lon and crr.lon <= 125.0 and 35 <= crr.lat and crr.lat <= 45 and crr.vel <= 160.0):
             print("The longitude is: " + str(crr.lon) + " and the lat: " + str(crr.lat))
             result.append(crr)
     result.append(points[-1])
@@ -62,14 +62,14 @@ def remove_OutLiers_Time_Vel(points):
             prv = points[i-1]
             crr = points[i]
             nxt = points[i+1]
-            
+
             if prv.time < crr.time and crr.time < nxt.time:
                 if firstTime:
                     firstTime = False
-                    if (crr.vel < 150 and prv.lon <= 120.0 and prv.lon >= 113.0 and prv.lat >= 36.0 and prv.lat <= 42.0 and abs(crr.vel - prv.vel) < 50):
-                        result.append(prv) 
-                        result.append(crr) 
-                elif not (crr.lon <= 120.0 and crr.lon >= 113.0 and crr.lat >= 36.0 and crr.lat <= 42.0 and crr.vel < 150 and abs(crr.vel - prv.vel) < 50):
+                    if (crr.vel < 150 and abs(crr.vel - prv.vel) < 50):
+                        result.append(prv)
+                        result.append(crr)
+                elif not ( crr.vel < 150 and abs(crr.vel - prv.vel) < 50):
                     print("Im out and my vel is:")
                     print(crr.vel)
                     cont += 1
@@ -78,8 +78,8 @@ def remove_OutLiers_Time_Vel(points):
                 else:
                     print("Should have less than 150 and the difference from the last one should be:")
                     print(crr.vel)
-                    result.append(crr) 
-        if (points[-1].vel < 150 and points[-1].lon <= 120.0 and points[-1].lon >= 113.0 and points[-1].lat >= 36.0 and points[-1].lat <= 42.0 and abs(points[-2].vel-points[-1].vel) <= 50):
+                    result.append(crr)
+        if (points[-1].vel < 150 and abs(points[-2].vel-points[-1].vel) <= 50):
             result.append(points[-1])
         print("Noise removal took care of: " + str(cont))
     return result
@@ -160,7 +160,7 @@ class Segment(object):
             :obj:`Segment`
         """
         print("Im in the smooth function")
-        
+
         if strategy == INVERSE_STRATEGY:
             print("Im inversing")
             self.points = with_inverse(self.points, noise)
@@ -278,8 +278,8 @@ class Segment(object):
         """
         self.points = sort_segment_points(self.points, segment.points)
         return self
-    
-    #only append at the end 
+
+    #only append at the end
     # REQIRES ORDERED INPUT
     def add_point_end_of_segment(self, Pnt):
         """Takes one line segment and a point and connects it

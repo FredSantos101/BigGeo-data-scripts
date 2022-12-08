@@ -1,4 +1,4 @@
-certifi==2019.6.16
+certifi==2022.12.7
 changepy==0.1
 chardet==3.0.4
 gpxpy==1.1.1
